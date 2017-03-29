@@ -1,0 +1,33 @@
+{
+  "config": {
+    "build-first:canary": "--pack-extension=./extension",
+    "build-first:chrome": "--pack-extension=./extension",
+    "build:canary": "--pack-extension=./extension --pack-extension-key=./extension.pem",
+    "build:chrome": "--pack-extension=./extension --pack-extension-key=./extension.pem",
+    "develop:canary": "--user-data-dir=./userdata_canary --load-extension=./extension --disable-default-apps --disable-translate --no-default-browser-check --no-first-run",
+    "develop:chrome": "--user-data-dir=./userdata_chrome --load-extension=./extension --disable-default-apps --disable-translate --no-default-browser-check --no-first-run",
+    "exec:canary": "--user-data-dir=./userdata_canary --disable-default-apps --disable-translate --no-default-browser-check --no-first-run",
+    "exec:chrome": "--user-data-dir=./userdata_chrome --disable-default-apps --disable-translate --no-default-browser-check --no-first-run"
+  },
+  "devDependencies": {
+    "fixpack": "^2.3.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "rimraf": "^2.6.1",
+    "which-chrome": "^0.1.0"
+  },
+  "private": true,
+  "scripts": {
+    "build-first:canary": "\"$(which-chrome ChromeCanary)\" $npm_package_config_build_first_canary",
+    "build-first:chrome": "\"$(which-chrome Chrome)\"       $npm_package_config_build_first_chrome",
+    "build:canary": "\"$(which-chrome ChromeCanary)\" $npm_package_config_build_canary || npm run build-first:canary",
+    "build:chrome": "\"$(which-chrome Chrome)\"       $npm_package_config_build_chrome || npm run build-first:chrome",
+    "clean": "rimraf ./extension.crx ./extension.pem './userdata_*/*' './userdata_*/.!(gitkeep)'",
+    "develop:canary": "\"$(which-chrome ChromeCanary)\" $npm_package_config_develop_canary",
+    "develop:chrome": "\"$(which-chrome Chrome)\"       $npm_package_config_develop_chrome",
+    "exec:canary": "\"$(which-chrome ChromeCanary)\" $npm_package_config_exec_canary",
+    "exec:chrome": "\"$(which-chrome Chrome)\"       $npm_package_config_exec_chrome",
+    "export": "git archive HEAD | tar x - -C",
+    "fixpack": "fixpack",
+    "zip": "zip -r ./extension.zip ./extension/*"
+  }
+}
